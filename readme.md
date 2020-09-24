@@ -1,4 +1,4 @@
-###### CUSTOM [CONSTRUCT-UI](https://github.com/vrimar/construct-ui) STYLES/THEME
+##### BUILT FOR [CONSTRUCT-UI](https://github.com/vrimar/construct-ui)
 
 ## @brixtol/synth-theme
 
