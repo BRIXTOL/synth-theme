@@ -16,6 +16,10 @@ pnpm i @brixtol/synth-theme
 
 > This package not available on the NPM registry
 
+## Icons
+
+Included in the package is some internal icons which are generated into mithril vnodes. For our use case icons are always delivered using an single `path` svg file so the generate script facilitates to SVG files that respect that format.
+
 ### License
 
 Licensed under [MIT](#LICENCE)
@@ -23,4 +27,3 @@ Licensed under [MIT](#LICENCE)
 ---
 
 We [♡](https://www.brixtoltextiles.com/discount/4D3V3L0P3RS]) open source!
-

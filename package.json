@@ -1,0 +1,52 @@
+{
+  "name": "@brixtol/synth-theme",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Consturct UI theme for the synth serverless administration application",
+  "author": "ΝΙΚΟΛΑΣ ΣΑΒΒΙΔΗΣ",
+  "owner": "SISSEL SAAS",
+  "license": "see LICENSE.txt",
+  "main": "./package/synth.min.js",
+  "types": "./package/types",
+  "scripts": {
+    "dev": "rollup -c -w",
+    "icons": "node scripts/generate-icons.js",
+    "build": "rollup -c --environment prod"
+  },
+  "prettier": "@brixtol/prettier-config",
+  "eslintConfig": {
+    "extends": [
+      "@brixtol/eslint-config"
+    ]
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "devDependencies": {
+    "@brixtol/eslint-config": "workspace:^1.0.0",
+    "@brixtol/prettier-config": "workspace:^1.0.0",
+    "@brixtol/rollup-utils": "workspace:^0.1.0",
+    "@rollup/plugin-typescript": "^6.0.0",
+    "@rollup/plugin-virtual": "^2.0.3",
+    "@types/mithril": "^2.0.4",
+    "autoprefixer": "^10.0.0",
+    "construct-ui": "^0.2.9",
+    "cssnano": "^4.1.10",
+    "fs-extra": "^9.0.1",
+    "lodash": "^4.17.20",
+    "mithril": "^2.0.4",
+    "postcss": "^8.0.9",
+    "rollup-plugin-scss": "^2.6.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.27.2",
+    "sass-breakpoints": "^2.1.0",
+    "svg-parser": "^2.0.4",
+    "typescript": "^4.0.3"
+  },
+  "peerDependencies": {
+    "construct-ui": "^0.2.9",
+    "mithril": "^2.0.4"
+  }
+}
