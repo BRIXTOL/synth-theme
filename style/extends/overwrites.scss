@@ -1,0 +1,11 @@
+.cui-control-group {
+  width: 100%;
+  margin-right: 0 !important;
+  margin-bottom: 15px;
+}
+
+.cui-table {
+  tr > td {
+    font-size: $cui-font-size-xs;
+  }
+}
