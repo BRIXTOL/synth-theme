@@ -11,12 +11,12 @@ export default [
   {
     input: 'scss',
     plugins: [
-      virtual({ scss: 'import "./src/synth.scss"' }),
+      virtual({ scss: 'import "./style/synth.scss"' }),
       scss({
-        include: './src/synth.scss',
+        include: './style/synth.scss',
         output: 'package/synth.min.css',
-        watch: [ 'src/styles', 'src/style/mixins' ],
-        prefix: '@import "./style/variables.scss";',
+        watch: [ 'style/extends', 'style/mixins' ],
+        prefix: '@import "./style/extends/variables.scss";',
         processor: css => process.env.prod ? postcss([
           autoprefixer(),
           cssnano()
@@ -25,7 +25,7 @@ export default [
     ]
   },
   {
-    input: 'src/synth.ts',
+    input: 'types/synth.ts',
     external: [ 'mithril' ],
     output: {
       format: 'es',
