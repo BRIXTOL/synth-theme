@@ -1,102 +1,199 @@
 const { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } = require('fs')
-const { extname, join, resolve, basename } = require('path')
+const { extname, join, resolve, basename, dirname } = require('path')
 const cheerio = require('cheerio')
 const { minify } = require('html-minifier')
 const chalk = require('chalk')
-
-/* -------------------------------------------- */
-/*          GENERATE JSON SVG MAPPINGS          */
-/* -------------------------------------------- */
-
-console.log(chalk`{cyan GENERATING JSON SVG MAPPINGS}\n`)
-
-const IN_DIR = resolve(__dirname, '../icons')
-const OUT_FILE = resolve(__dirname, '../package/icons.json')
-
-if (!existsSync(OUT_FILE)) {
-  mkdirSync(OUT_FILE)
-}
+const featherIcons = require('feather-icons/dist/icons.json')
+const { camelCase, upperFirst, snakeCase } = require('lodash')
+const { log } = console
 
 /**
- * Build an object in the format: `{ <name>: <contents> }`.
- *
- * @param {string[]} svgFiles - A list of filenames.
- * @param {Function} getSvg - Returns the contents of SVG file given a filename.
- * @returns {Object}
+ * SVG Attribute Type Definitions
  */
-function buildIconsObject (svgFiles, getSvg) {
+const SVG_DEFS = '../../../types/SVGAttributes'
 
-  return svgFiles.map(svgFile => {
+/**
+ * `/src/icons/generated`
+ */
+const ICON_GEN = resolve(process.cwd(), './src/icons/generated')
 
-    const name = basename(svgFile, '.svg')
-    const svg = getSvg(svgFile)
-    const contents = getSvgContents(svg)
+if (!existsSync(ICON_GEN)) mkdirSync(ICON_GEN)
 
-    console.log(chalk`  - {magentaBright ${name}}`)
-    return {
-      name,
-      contents
-    }
+/**
+ * `/src/icons/generated/feather`
+ */
+const FEATHER_DIR = resolve(process.cwd(), './src/icons/generated/feather')
 
-  }).reduce((icons, icon) => {
+if (!existsSync(FEATHER_DIR)) mkdirSync(FEATHER_DIR)
 
-    icons[icon.name] = icon.contents
-    return icons
+/**
+ * `/src/icons/generated/custom`
+ */
+const CUSTOM_DIR = resolve(process.cwd(), './src/icons/generated/custom')
 
-  }, {})
-}
+if (!existsSync(CUSTOM_DIR)) mkdirSync(CUSTOM_DIR)
+
+/**
+ * `/src/svg/generated`
+ */
+// const SVG_GEN = resolve(process.cwd(), 'src/icons/generated/vnodes')
+
+// if (!existsSync(SVG_GEN)) mkdirSync(SVG_GEN)
+
+/**
+ * `/icons/*.svg`
+ */
+const SVGS_DIR = resolve(process.cwd(), 'svgs')
+
+// if (!existsSync(ICON_GEN)) mkdirSync(ICON_GEN)
 
 /**
  * Get contents between opening and closing `<svg>` tags.
  *
  * @param {string} svg
- * @returns {string}
+ * @returns {{attibutes: string, contents: string }}
  */
 function getSvgContents (svg) {
 
   const $ = cheerio.load(svg)
+  const { viewBox } = $('svg').attr()
+  const content = minify($('svg').html(), { collapseWhitespace: true })
 
-  return minify($('svg').html(), {
-    collapseWhitespace: true
-  })
+  return {
+    viewBox,
+    content
+  }
 
 }
 
-const svgFiles = readdirSync(IN_DIR).filter(file => extname(file) === '.svg')
-const getSvg = svgFile => readFileSync(join(IN_DIR, svgFile))
-const icons = buildIconsObject(svgFiles, getSvg)
+/**
+ * Generate Mithril Icon Vnodes
+ *
+ * @param {string} name The icon name
+ * @param {string} viewBox The viewBox attribute value
+ * @param {string} content Inner `<svg>` contents
+ * @param {'feather'|'custom'} type Icon pack
+ */
+function generateVnode (name, viewBox, content, type) {
 
-writeFileSync(OUT_FILE, JSON.stringify(icons))
+  const prepend = [
+    'import m from \'mithril\'',
+    `import { SVGAttributes } from '${SVG_DEFS}'\n`
+  ].join('\n')
 
-console.log(chalk`{white.dim \nGenerated ${basename(OUT_FILE)}}\n`)
+  const comment = type === 'feather'
+    ? '/** Feather Icon */'
+    : '/** Custom Icon */'
+
+  const xport = `export const ${upperFirst(camelCase(name))} = (SVGAttributes: SVGAttributes)`
+  const attrs = `{ ...SVGAttributes, viewBox: '${viewBox}' }`
+  const vnode = `${xport} => m('svg', ${attrs}, m.trust('${content}'))`
+
+  return `${prepend}\n${comment}\n${vnode}`
+
+}
+
+/**
+ * Build Feather Icon Exports
+ *
+ * @param {string} viewBox The viewBox attribute value
+ */
+function buildFeatherIcons (viewBox) {
+
+  const xport = []
+  const names = []
+
+  log(chalk`\n{white.bold Feather Icons}`)
+
+  for (const [ _name, contents ] of Object.entries(featherIcons)) {
+
+    const name = upperFirst(camelCase(_name))
+    const vnode = generateVnode(name, viewBox, contents, 'feather')
+
+    // WRITE SVG VNODE
+    writeFileSync(join(FEATHER_DIR, `${_name}.ts`), vnode)
+
+    // RECORD REFS
+    names.push(name)
+    xport.push(`export { ${name} } from './feather/${_name}'`)
+
+    // LOG
+    log(chalk`  - {magentaBright ${name}}`)
+
+  }
+
+  // LOG
+  log(chalk`\n{blue Generated {blueBright ${names.length})} files}`)
+
+  return {
+    xport,
+    names
+  }
+
+}
+
+/**
+ * Build Custom Icon Exports
+ *
+ * @param {string[]} svgFiles Custom SVG files list
+ * @param {function} getSvg SVG function getter
+ */
+function buildCustomIcons (svgFiles, getSvg) {
+
+  const { xport, names } = buildFeatherIcons('0 0 24 24')
+
+  log(chalk`\n{white.bold Custom Icons}`)
+
+  xport.push('\n// CUSTOM ICONS -------------------------------\n')
+
+  for (const svgFile of svgFiles) {
+
+    const _name = basename(svgFile, '.svg')
+    const file = readFileSync(join(SVGS_DIR, svgFile))
+    const { content, viewBox } = getSvgContents(file)
+    const vnode = generateVnode(_name, viewBox, content, 'custom')
+
+    // WRITE SVG VNODE
+    writeFileSync(join(CUSTOM_DIR, `${_name}.ts`), vnode)
+
+    const name = upperFirst(camelCase(_name))
+    // RECORD REFS
+    names.push(name)
+    xport.push(`export { ${name} } from './custom/${_name}'`)
+
+    // LOG
+    log(chalk`  - {magentaBright ${_name}}`)
+  }
+
+  // LOG
+  log(chalk`\n{green Generated {greenBright ${svgFiles.length}} files}`)
+
+  return {
+    xport,
+    names
+  }
+
+}
 
 /* -------------------------------------------- */
 /*           GENERATE TYPESCRIPT FILES          */
 /* -------------------------------------------- */
 
-console.log(chalk`{cyan GENERATING TYPESCRIPT EXPORTS}\n`)
-
-const GENERATED_ICON_PATH = resolve(process.cwd(), './types/icons')
-const ICONS = require('../package/icons.json')
-
-if (!existsSync(GENERATED_ICON_PATH)) {
-
-  mkdirSync(GENERATED_ICON_PATH)
-
-}
-
 /**
  * Write Lines to File
  *
+ * @param {string} directory
  * @param {string} filename
  * @param {string[]} lines
  */
-async function writeLinesToFile (filename, ...lines) {
+function writeLinesToFile (directory, filename, ...lines) {
 
-  const outputPath = join(GENERATED_ICON_PATH, filename)
-  const contents = [ '/* tslint:disable */', ...lines, '' ].join('\n')
+  const outputPath = join(directory, filename)
+  const content = [ '/* tslint:disable */', ...lines, '' ].join('\n')
 
-  writeFileSync(outputPath, contents)
+  log(chalk`  - {magentaBright ${filename}}`)
+
+  writeFileSync(outputPath, content)
 
 }
 
@@ -105,33 +202,13 @@ async function writeLinesToFile (filename, ...lines) {
  *
  * @returns {string}
  */
-function exportIconNames () {
+function exportIconNames (x) {
 
-  const icons = Object.keys(ICONS).map(iconName => {
+  const object = 'export const IconNames = {\n'
+  const props = x.map(n => `${snakeCase(n).toUpperCase()}: '${upperFirst(camelCase(n))}'`)
+  const types = '\n\nexport type IconNames = typeof IconNames[keyof typeof IconNames];'
 
-    const constName = iconName.replace(/-/g, '_')
-    return `export const ${constName.toUpperCase()} = '${iconName}';`
-
-  })
-
-  console.log(chalk`  - {magentaBright IconNames.ts}`)
-
-  return icons
-}
-
-/**
- * Generates Icon Contents Export
- *
- * @returns {string}
- */
-function exportIconContents () {
-
-  const contents = Object.keys(ICONS).map(iconName => `'${iconName}' : '${ICONS[iconName]}'\n`)
-
-  console.log(chalk`  - {magentaBright IconContents.ts}`)
-
-  return `export default { ${contents} }`
-
+  return `${object}  ${props.join(',\n  ')}\n}${types}`
 }
 
 /**
@@ -141,12 +218,11 @@ function exportIconContents () {
  */
 function generateIndex () {
 
-  const index = `import * as Icons from './IconNames';
-  import IconContents from './IconContents';
-
-  export { Icons, IconContents };
-  `
-  console.log(chalk`  - {magentaBright index.ts}\n`)
+  const index = [
+    'import * as Icons from \'./Icons\'',
+    'import * as IconNames from \'./IconNames\'',
+    'export { Icons, IconNames }'
+  ].join('\n')
 
   return index
 }
@@ -155,8 +231,16 @@ function generateIndex () {
 /*                  WRITE FILES                 */
 /* -------------------------------------------- */
 
-writeLinesToFile('IconNames.ts', ...exportIconNames())
-writeLinesToFile('IconContents.ts', exportIconContents())
-writeLinesToFile('index.ts', generateIndex())
+const svgFiles = readdirSync(SVGS_DIR).filter(file => extname(file) === '.svg')
+const getSvg = svgFile => readFileSync(join(SVGS_DIR, svgFile))
+const { xport, names } = buildCustomIcons(svgFiles, getSvg)
 
-console.log(chalk`{white.dim Generated 3 files}\n`)
+// LOG
+log(chalk`\n{white.bold TypeScript Files}`)
+
+// SVGS
+writeLinesToFile(ICON_GEN, 'Icons.ts', xport.join('\n'))
+writeLinesToFile(ICON_GEN, 'IconNames.ts', exportIconNames(names))
+writeLinesToFile(ICON_GEN, 'index.ts', generateIndex(names))
+
+log(chalk`\n{greenBright Generated {bold ${names.length + 3}} files}\n`)
