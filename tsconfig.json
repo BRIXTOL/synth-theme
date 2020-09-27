@@ -11,19 +11,25 @@
       "dom",
       "es7"
     ],
+    "paths": {
+      "@/": [
+        "src/"
+      ]
+    },
     "moduleResolution": "node",
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "sourceMap": false,
     "strictNullChecks": true,
+    "skipLibCheck": true,
     "suppressImplicitAnyIndexErrors": true,
     "target": "es5"
   },
   "include": [
-    "types/"
+    "./src"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules/**"
   ]
 }

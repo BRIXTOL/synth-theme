@@ -1,0 +1,34 @@
+{
+  "name": "@brixtol/synth-theme-test",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tests for synth theme",
+  "author": "ΝΙΚΟΛΑΣ ΣΑΒΒΙΔΗΣ",
+  "owner": "SISSEL SAAS",
+  "license": "see LICENSE.txt",
+  "main": "./package/synth.js",
+  "types": "./package/synth.d.ts",
+  "scripts": {
+    "dev": "rollup -c -w",
+    "icons": "node ./bin/icons.js",
+    "build": "rollup -c --environment prod"
+  },
+  "prettier": "@brixtol/prettier-config",
+  "eslintConfig": {
+    "extends": [
+      "@brixtol/eslint-config"
+    ]
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "peerDependencies": {
+    "construct-ui": "^0.2.9",
+    "mithril": "^2.0.4"
+  },
+  "dependencies": {
+    "@brixtol/synth-theme": "workspace:^0.1.0"
+  }
+}

@@ -1,0 +1,5 @@
+import m from 'mithril'
+import { SVGAttributes } from '../../../types/SVGAttributes'
+
+/** Feather Icon */
+export const ArrowRightCircle = (SVGAttributes: SVGAttributes) => m('svg', { ...SVGAttributes, viewBox: '0 0 24 24' }, m.trust('<circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line>'))
