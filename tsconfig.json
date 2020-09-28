@@ -5,27 +5,26 @@
     "declaration": true,
     "esModuleInterop": true,
     "importHelpers": true,
-    "module": "es2015",
+    "module": "es6",
     "outDir": "./package",
     "lib": [
       "dom",
       "es7"
     ],
-    "paths": {
-      "@/": [
-        "src/"
-      ]
-    },
     "moduleResolution": "node",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "sourceMap": false,
     "strictNullChecks": true,
     "skipLibCheck": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es5"
+    "target": "es6"
   },
+  "files": [
+    "./src/defs/attrs.d.ts",
+    "./src/defs/svg.d.ts"
+  ],
   "include": [
     "./src"
   ],

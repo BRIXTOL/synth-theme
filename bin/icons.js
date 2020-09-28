@@ -10,26 +10,26 @@ const { log } = console
 /**
  * SVG Attribute Type Definitions
  */
-const SVG_DEFS = '../../../types/SVGAttributes'
+const SVG_DEFS = '../../../defs/svg'
 
 /**
- * `/src/icons/generated`
+ * `/src/svg/generated`
  */
-const ICON_GEN = resolve(process.cwd(), './src/icons/generated')
+const ICON_GEN = resolve(process.cwd(), './src/svg/generated')
 
 if (!existsSync(ICON_GEN)) mkdirSync(ICON_GEN)
 
 /**
- * `/src/icons/generated/feather`
+ * `/src/svg/generated/feather`
  */
-const FEATHER_DIR = resolve(process.cwd(), './src/icons/generated/feather')
+const FEATHER_DIR = resolve(process.cwd(), './src/svg/generated/feather')
 
 if (!existsSync(FEATHER_DIR)) mkdirSync(FEATHER_DIR)
 
 /**
- * `/src/icons/generated/custom`
+ * `/src/svg/generated/custom`
  */
-const CUSTOM_DIR = resolve(process.cwd(), './src/icons/generated/custom')
+const CUSTOM_DIR = resolve(process.cwd(), './src/svg/generated/custom')
 
 if (!existsSync(CUSTOM_DIR)) mkdirSync(CUSTOM_DIR)
 
@@ -204,9 +204,9 @@ function writeLinesToFile (directory, filename, ...lines) {
  */
 function exportIconNames (x) {
 
-  const object = 'export const IconNames = {\n'
+  const object = 'export const SvgNames = {\n'
   const props = x.map(n => `${snakeCase(n).toUpperCase()}: '${upperFirst(camelCase(n))}'`)
-  const types = '\n\nexport type IconNames = typeof IconNames[keyof typeof IconNames];'
+  const types = '\n\nexport type SvgNames = typeof SvgNames[keyof typeof SvgNames];'
 
   return `${object}  ${props.join(',\n  ')}\n}${types}`
 }
@@ -219,9 +219,9 @@ function exportIconNames (x) {
 function generateIndex () {
 
   const index = [
-    'import * as Icons from \'./Icons\'',
-    'import * as IconNames from \'./IconNames\'',
-    'export { Icons, IconNames }'
+    'import * as Svgs from \'./Svgs\'',
+    'import { SvgNames } from \'./SvgNames\'',
+    'export { Svgs, SvgNames }'
   ].join('\n')
 
   return index
@@ -239,8 +239,8 @@ const { xport, names } = buildCustomIcons(svgFiles, getSvg)
 log(chalk`\n{white.bold TypeScript Files}`)
 
 // SVGS
-writeLinesToFile(ICON_GEN, 'Icons.ts', xport.join('\n'))
-writeLinesToFile(ICON_GEN, 'IconNames.ts', exportIconNames(names))
+writeLinesToFile(ICON_GEN, 'Svgs.ts', xport.join('\n'))
+writeLinesToFile(ICON_GEN, 'SvgNames.ts', exportIconNames(names))
 writeLinesToFile(ICON_GEN, 'index.ts', generateIndex(names))
 
 log(chalk`\n{greenBright Generated {bold ${names.length + 3}} files}\n`)

@@ -17,7 +17,7 @@
   "prettier": "@brixtol/prettier-config",
   "eslintConfig": {
     "extends": [
-      "@brixtol/eslint-config"
+      "@brixtol/eslint-config-typescript"
     ]
   },
   "browserslist": [
@@ -26,7 +26,7 @@
     "not ie <= 10"
   ],
   "devDependencies": {
-    "@brixtol/eslint-config": "workspace:^1.0.0",
+    "@brixtol/eslint-config-typescript": "workspace:^1.0.0",
     "@brixtol/prettier-config": "workspace:^1.0.0",
     "@brixtol/rollup-utils": "workspace:^0.1.0",
     "@rollup/plugin-typescript": "^6.0.0",
