@@ -10,14 +10,8 @@
   "types": "./package/synth.d.ts",
   "scripts": {
     "dev": "rollup -c -w",
-    "icons": "node ./bin/icons.js",
+    "icons": "node ./bin/svgs.js",
     "build": "rollup -c --environment prod"
-  },
-  "prettier": "@brixtol/prettier-config",
-  "eslintConfig": {
-    "extends": [
-      "@brixtol/eslint-config"
-    ]
   },
   "browserslist": [
     "> 1%",
