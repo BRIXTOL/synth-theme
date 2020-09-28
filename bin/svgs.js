@@ -140,7 +140,10 @@ function buildFeatherIcons (viewBox) {
  */
 function buildCustomIcons (svgFiles, getSvg) {
 
-  const { xport, names } = buildFeatherIcons('0 0 24 24')
+  // const { xport, names } = buildFeatherIcons('0 0 24 24')
+
+  const xport = []
+  const names = []
 
   log(chalk`\n{white.bold Custom Icons}`)
 
