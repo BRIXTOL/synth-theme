@@ -5,10 +5,10 @@ import { Classes } from '../utils/classes'
 import { Svgs, SvgNames } from './generated'
 import { SVGAttributes } from '../defs/svg'
 
-export interface IIconAttrs extends IAttrs, ISizeAttrs, IIntentAttrs {
+export interface ISvgAttrs extends IAttrs, ISizeAttrs, IIntentAttrs {
 
   /** Define attributes on `<svg>` node */
-  svg?: SVGAttributes;
+  svg?: SVGAttributes | {};
 
   /** Icon name */
   name: SvgNames;
@@ -20,9 +20,9 @@ export interface IIconAttrs extends IAttrs, ISizeAttrs, IIntentAttrs {
 
 }
 
-export class Icon implements m.Component<IIconAttrs> {
+export class Svg implements m.Component<ISvgAttrs> {
 
-  public view({ attrs }: m.Vnode<IIconAttrs>): m.Vnode {
+  public view({ attrs }: m.Vnode<ISvgAttrs>): m.Vnode {
 
     const {
       class: className,
