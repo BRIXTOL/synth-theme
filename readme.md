@@ -22,17 +22,49 @@ pnpm i @brixtol/synth-theme
 | ------------ | ---------------------------------------------- |
 | `pnpm dev`   | Starts development environment                 |
 | `pnpm build` | Builds production bundles and type definitions |
-| `pnpm icons` | Generates icon vnodes from SVGs                |
+| `pnpm svgs`  | Generates icon vnodes from SVGs                |
 
 ## Styles
 
 The synth theme brings some sanity to styles applied by [Construct-UI](https://vrimar.github.io/construct-ui) and allows for a simple approach to adjusting global presets.
 
-## Icons
+## Svgs
 
-Icons avaiable to the Synth theme are created using the same logic implemented by Construct UI which leverages [Feather](https://github.com/feathericons/feather) for icon support. Synth applies scripting used by these two projects to generate additional icons from a collection of SVG files.
+Svg icons avaiable to the Synth theme are created using the same logic implemented by Construct UI which leverages [Feather](https://github.com/feathericons/feather) for icon support. Synth applies scripting used by these two projects to generate additional custom svgs from a collection of SVG files.
 
 > We use [Vecta Nano](https://www.npmjs.com/package/nanosvg) to preprocess SVGs and vectors. This repository leverages their compression engine package. [Nano](https://vecta.io/nano/pricing) requires a paid license key to use.
+
+### Generating
+
+Add any SVG file to `svgs/` in projects root and then run `pnpm svgs` this will generate the relevant icon files and Typescript exports.
+
+### Example
+
+Just as you would export `Icons` from construct ui, same rules and logic apply for SVG. This model also export type definitions for SVG Attributes.
+
+```ts
+import { Svg, SvgNames } from "@brixtol/synth-theme";
+
+// Returns an SVG via name
+m(Svg, {
+  name: SvgNames.Logo
+  intent: number,
+  className: string,
+  svg: {
+    stroke: "1px",
+  },
+});
+
+```
+
+Additionally, you can return the vnode SVG directly:
+
+```js
+import { Svgs } from "@brixtol/synth-theme";
+
+// Returns a Vnode, eg: m('svg', m('path', m.trust('...')))
+Svgs.Logo({ SVGAttributes });
+```
 
 ### License
 

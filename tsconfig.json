@@ -22,7 +22,6 @@
     "target": "es6"
   },
   "files": [
-    "./src/defs/attrs.d.ts",
     "./src/defs/svg.d.ts"
   ],
   "include": [
