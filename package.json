@@ -10,7 +10,7 @@
   "types": "package/index.d.ts",
   "scripts": {
     "dev": "rollup -c -w",
-    "icons": "node bin/icons.js",
+    "svgs": "node bin/svgs.js",
     "build": "rollup -c",
     "ts": "tsc -p tsconfig.json"
   },
