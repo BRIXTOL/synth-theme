@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "importHelpers": true,
     "module": "es6",
+    "rootDir": "./src",
     "outDir": "./package",
     "lib": [
       "dom",

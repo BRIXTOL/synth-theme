@@ -1,6 +1,5 @@
 @import "./colors.scss";
 @import "../mixins/cui.scss";
-@import "../mixins/breakpoints.scss";
 @import "../mixins/spacing.scss";
 
 /* -------------------------------------------- */
@@ -19,13 +18,49 @@ $cui-screen-size-md-max: $cui-screen-size-md - 1px !default;
 $cui-screen-size-lg-max: $cui-screen-size-lg - 1px !default;
 $cui-screen-size-xl-max: $cui-screen-size-xl - 1px !default;
 
-$breakpoints: (
-  "xs": $cui-screen-size-xs,
-  "sm": $cui-screen-size-sm,
-  "md": $cui-screen-size-md,
-  "lg": $cui-screen-size-lg,
-  "xl": $cui-screen-size-xl,
-);
+$grid-breakpoints: (
+  xs: $cui-screen-size-xs,
+  sm: $cui-screen-size-sm,
+  md: $cui-screen-size-md,
+  lg: $cui-screen-size-lg,
+  xl: $cui-screen-size-xl,
+) !default;
+
+/* -------------------------------------------- */
+/*                    SPACING                   */
+/* -------------------------------------------- */
+
+$grid-gutter-width: 15px !default;
+$spacer: $grid-gutter-width * 0.5 !default;
+$spacer-x: $spacer !default;
+$spacer-y: $spacer !default;
+
+$spacers: (
+  0: (
+    x: 0,
+    y: 0,
+  ),
+  1: (
+    x: $spacer-x * 1,
+    y: $spacer-y * 1,
+  ),
+  2: (
+    x: $spacer-x * 2,
+    y: $spacer-y * 2,
+  ),
+  3: (
+    x: $spacer-x * 3,
+    y: $spacer-y * 3,
+  ),
+  4: (
+    x: $spacer-x * 4,
+    y: $spacer-y * 4,
+  ),
+  5: (
+    x: $spacer-x * 5,
+    y: $spacer-y * 5,
+  ),
+) !default;
 
 /* -------------------------------------------- */
 /*                   BASE SIZE                  */
@@ -464,16 +499,3 @@ $cui-elevation-1: 0px 2px 4px -2px rgba(67, 90, 111, 0.3) !default;
 $cui-elevation-2: 0px 5px 8px -4px rgba(67, 90, 111, 0.3) !default;
 $cui-elevation-3: 0px 8px 10px -4px rgba(67, 90, 111, 0.3) !default;
 $cui-elevation-4: 0px 16px 24px -8px rgba(67, 90, 111, 0.3) !default;
-
-/* -------------------------------------------- */
-/*                    SPACING                   */
-/* -------------------------------------------- */
-
-$spacing-sizes: (
-  0: 0rem,
-  1: 0.25rem,
-  2: 0.5rem,
-  3: 1rem,
-) !default;
-
-$spacing-important: true !default;

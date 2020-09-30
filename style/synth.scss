@@ -2,9 +2,10 @@
 /*                    CUSTOM                    */
 /* -------------------------------------------- */
 
-@import "./style/extends/variables.scss";
-@import "./style/extends/spacing.scss";
-@import "./style/extends/layout.scss";
+@import "extends/variables.scss";
+@import "extends/svg.scss";
+@import "extends/spacing.scss";
+@import "extends/layout.scss";
 
 /* -------------------------------------------- */
 /*                 CONSTRUCT UI                 */
