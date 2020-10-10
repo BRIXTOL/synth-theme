@@ -1,0 +1,42 @@
+.synth-loading {
+  fill: none;
+  stroke: #222;
+  stroke-linecap: round;
+  stroke-width: 8%;
+}
+
+use {
+  stroke: #fff;
+  animation: a 2s linear infinite;
+}
+
+@keyframes a {
+  to {
+    stroke-dashoffset: 0px;
+  }
+}
+
+.bg-anim {
+  background: linear-gradient(
+    170deg,
+    #81ffef 0%,
+    #f067b4 70%,
+    #81ffef 10%,
+    #f067b4 100%
+  );
+  background-size: 400% 400%;
+
+  animation: AnimationName 3s ease infinite;
+}
+
+@keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 51%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
