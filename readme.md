@@ -1,5 +1,7 @@
 ##### BUILT FOR [CONSTRUCT-UI](https://github.com/vrimar/construct-ui)
 
+> This project is WIP, so don't be a fucking hero.
+
 ## @brixtol/synth-theme
 
 This package contains theme styles and customization for the [mithril.js](https://mithril.js.org/) UI library [Construct-UI](https://vrimar.github.io/construct-ui). Synth is an internal (closed source) application used by us here at [Brixtol Textiles](https://www.brixtoltextiles.com) which leverages the Construct UI library.
