@@ -29,6 +29,20 @@ use {
   animation: AnimationName 3s ease infinite;
 }
 
+.user-avatar {
+  box-shadow: $cui-elevation-2;
+  border: 1px solid $blue-grey50;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-self: center;
+  margin-left: 7px;
+
+  &:hover {
+    box-shadow: none;
+  }
+}
+
 @keyframes AnimationName {
   0% {
     background-position: 0% 50%;
