@@ -5,11 +5,17 @@
 }
 
 .cui-table {
-  tr > td {
+  th,
+  td,
+  tr {
     font-size: $cui-font-size-xs;
   }
 }
 
 .cui-card {
   background: $black-500 !important;
+}
+
+.cui-tree-node {
+  cursor: pointer;
 }

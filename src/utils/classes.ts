@@ -10,6 +10,8 @@ export const Classes = {
   TIMELINE_ICON: 'cui-timeline-icon',
   TIMELINE_LEFT: 'cui-timeline-left',
   TIMELINE_CENTER: 'cui-timeline-center',
-  TIMELINE_RIGHT: 'cui-timeline-right'
+  TIMELINE_RIGHT: 'cui-timeline-right',
+
+  BG_COLOR: '#eceff1'
 
 };

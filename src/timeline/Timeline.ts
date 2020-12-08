@@ -6,10 +6,10 @@ import { Classes } from '../utils/classes'
 export interface ITimelineAttrs extends IAttrs, ISizeAttrs {
 
   /** Align line */
-  align: 'left' | 'center' | 'right'
+  align?: 'left' | 'center' | 'right'
 
   /** Colors */
-  color: string,
+  color?: string,
 
   [htmlAttrs: string]: any;
 }
